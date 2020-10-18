@@ -1,0 +1,9 @@
+server:
+  port : 8081
+
+bplustree:
+  dimension: 4
+  
+file:
+  file-name: 'car.txt'
+  key-separator: ;;
