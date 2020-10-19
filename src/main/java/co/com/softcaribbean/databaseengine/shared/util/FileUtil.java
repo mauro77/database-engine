@@ -42,21 +42,21 @@ public class FileUtil {
   public static List<BPlusTreeValueObject> readFileLines(String fileName, String separator) throws IOException {
 
     var responseList = new ArrayList<BPlusTreeValueObject>();
-    File file = new File(fileName);
+    var file = new File(fileName);
     String line;
-    int startByte = 0;
+    var startByte = 0;
 
-    CountingInputStream cis = new CountingInputStream(new FileInputStream(file));
+    var cis = new CountingInputStream(new FileInputStream(file));
     if (cis.read() == -1) {
       return responseList;
     }
-    BufferedReader br = new BufferedReader(new InputStreamReader(cis, "UTF-8"), 8192);
+    var br = new BufferedReader(new InputStreamReader(cis, "UTF-8"), 8192);
     while ((line = br.readLine()) != null) {
       line = line.trim();
       if (line.length() != 0) {
         var keyValue = getValueKeyFromLine(line, separator);
-        long lineSize = line.length();
-        BPlusTreeValueObject object = BPlusTreeValueObject.builder().initialPosition(startByte)
+        var lineSize = line.length();
+        var object = BPlusTreeValueObject.builder().initialPosition(startByte)
             .objetLength((int) lineSize).value(keyValue[1]).key(keyValue[0]).build();
         startByte += lineSize + 1;
         responseList.add(object);

@@ -27,18 +27,18 @@ public class InternalNode <K extends Comparable<? super K>, V> extends Node<K, V
 
   @Override
   Node deleteValue(K key, Node root, int dimension) {
-    Node child = getChild(key);
+    var child = getChild(key);
     child.deleteValue(key, root, dimension);
     if (child.isUnderflow(dimension)) {
-      Node childLeftSibling = getChildLeftSibling(key);
-      Node childRightSibling = getChildRightSibling(key);
-      Node left = childLeftSibling != null ? childLeftSibling : child;
-      Node right = childLeftSibling != null ? child
+      var childLeftSibling = getChildLeftSibling(key);
+      var childRightSibling = getChildRightSibling(key);
+      var left = childLeftSibling != null ? childLeftSibling : child;
+      var right = childLeftSibling != null ? child
           : childRightSibling;
       left.merge(right);
       deleteChild((K) right.getFirstLeafKey());
       if (left.isOverflow(dimension)) {
-        Node sibling = left.split();
+        var sibling = left.split();
         insertChild((K) sibling.getFirstLeafKey(), sibling);
       }
       if (root.keyNumber() == 0)
@@ -49,15 +49,15 @@ public class InternalNode <K extends Comparable<? super K>, V> extends Node<K, V
 
   @Override
   Node insertValue(K key, V value, Node root, int dimension) {
-    Node child = getChild(key);
+    var child = getChild(key);
     child.insertValue(key, value, root, dimension);
     if (child.isOverflow(dimension)) {
-      Node sibling = child.split();
+      var sibling = child.split();
       insertChild((K) sibling.getFirstLeafKey(), sibling);
     }
     if (root.isOverflow(dimension)) {
-      Node sibling = split();
-      InternalNode newRoot = new InternalNode();
+      var sibling = split();
+      var newRoot = new InternalNode();
       newRoot.keys.add(sibling.getFirstLeafKey());
       newRoot.children.add(this);
       newRoot.children.add(sibling);
@@ -73,7 +73,7 @@ public class InternalNode <K extends Comparable<? super K>, V> extends Node<K, V
 
   @Override
   void merge(Node sibling) {
-    InternalNode node = (InternalNode) sibling;
+    var node = (InternalNode) sibling;
     keys.add((K) node.getFirstLeafKey());
     keys.addAll(node.keys);
     children.addAll(node.children);
@@ -83,7 +83,7 @@ public class InternalNode <K extends Comparable<? super K>, V> extends Node<K, V
   @Override
   Node split() {
     int from = keyNumber() / 2 + 1, to = keyNumber();
-    InternalNode sibling = new InternalNode();
+    var sibling = new InternalNode();
     sibling.keys.addAll(keys.subList(from, to));
     sibling.children.addAll(children.subList(from, to + 1));
 
@@ -110,7 +110,7 @@ public class InternalNode <K extends Comparable<? super K>, V> extends Node<K, V
   }
 
   private void deleteChild(K key) {
-    int loc = Collections.binarySearch(keys, key);
+    var loc = Collections.binarySearch(keys, key);
     if (loc >= 0) {
       keys.remove(loc);
       children.remove(loc + 1);
@@ -118,8 +118,8 @@ public class InternalNode <K extends Comparable<? super K>, V> extends Node<K, V
   }
 
   private void insertChild(K key, Node child) {
-    int loc = Collections.binarySearch(keys, key);
-    int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
+    var loc = Collections.binarySearch(keys, key);
+    var childIndex = loc >= 0 ? loc + 1 : -loc - 1;
     if (loc >= 0) {
       children.set(childIndex, child);
     } else {
@@ -129,8 +129,8 @@ public class InternalNode <K extends Comparable<? super K>, V> extends Node<K, V
   }
 
   private Node getChildLeftSibling(K key) {
-    int loc = Collections.binarySearch(keys, key);
-    int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
+    var loc = Collections.binarySearch(keys, key);
+    var childIndex = loc >= 0 ? loc + 1 : -loc - 1;
     if (childIndex > 0)
       return children.get(childIndex - 1);
 
@@ -138,8 +138,8 @@ public class InternalNode <K extends Comparable<? super K>, V> extends Node<K, V
   }
 
   private Node getChildRightSibling(K key) {
-    int loc = Collections.binarySearch(keys, key);
-    int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
+    var loc = Collections.binarySearch(keys, key);
+    var childIndex = loc >= 0 ? loc + 1 : -loc - 1;
     if (childIndex < keyNumber())
       return children.get(childIndex + 1);
 

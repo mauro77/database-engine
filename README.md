@@ -41,7 +41,7 @@ Proyecto que simula el comportamiento de un motor de base de datos utilizando á
 
 ## Autores ✒️
 
-* **Mauricio Hincapi** - *Desarrollo*
+* **Mauricio Hincapie** - *Desarrollo*
 
 
 ## Licencia 📄

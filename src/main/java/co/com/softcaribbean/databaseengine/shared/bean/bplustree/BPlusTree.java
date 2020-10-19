@@ -3,7 +3,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import org.springframework.stereotype.Component;
 
@@ -66,17 +65,17 @@ public class BPlusTree<K extends Comparable<? super K>, V> {
    * Return BPlus tree structure as string
    */
   public String toString() {
-    Queue<List<Node>> queue = new LinkedList<List<Node>>();
+    var queue = new LinkedList<List<Node>>();
     queue.add(Arrays.asList(root));
-    StringBuilder sb = new StringBuilder();
+    var sb = new StringBuilder();
     while (!queue.isEmpty()) {
-      Queue<List<Node>> nextQueue = new LinkedList<List<Node>>();
+      var nextQueue = new LinkedList<List<Node>>();
       while (!queue.isEmpty()) {
-        List<Node> nodes = queue.remove();
+        var nodes = queue.remove();
         sb.append('{');
         Iterator<Node> it = nodes.iterator();
         while (it.hasNext()) {
-          Node<?, ?> node = it.next();
+          var node = it.next();
           sb.append(node.toString());
           if (it.hasNext())
             sb.append(", ");

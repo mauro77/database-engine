@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+
 /**
  *
  * <p>
@@ -13,6 +16,7 @@ import java.util.List;
  * @author Mauricio Hincapié Monsalve.
  *
  */
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class LeafNode<K extends Comparable<? super K>, V> extends Node<K, V> {
   List<V> values;
   LeafNode next;
@@ -24,13 +28,13 @@ public class LeafNode<K extends Comparable<? super K>, V> extends Node<K, V> {
 
   @Override
    V getValue(K key) {
-    int loc = Collections.binarySearch(keys, key);
+    var loc = Collections.binarySearch(keys, key);
     return loc >= 0 ? values.get(loc) : null;
   }
 
   @Override
   Node deleteValue(K key, Node root, int dimension) {
-    int loc = Collections.binarySearch(keys, key);
+    var loc = Collections.binarySearch(keys, key);
     if (loc >= 0) {
       keys.remove(loc);
       values.remove(loc);
@@ -40,8 +44,8 @@ public class LeafNode<K extends Comparable<? super K>, V> extends Node<K, V> {
 
   @Override
   Node insertValue(K key, V value, Node root, int dimension) {
-    int loc = Collections.binarySearch(keys, key);
-    int valueIndex = loc >= 0 ? loc : -loc - 1;
+    var loc = Collections.binarySearch(keys, key);
+    var valueIndex = loc >= 0 ? loc : -loc - 1;
     if (loc >= 0) {
       values.set(valueIndex, value);
     } else {
@@ -49,7 +53,7 @@ public class LeafNode<K extends Comparable<? super K>, V> extends Node<K, V> {
       values.add(valueIndex, value);
     }
     if (root.isOverflow(dimension)) {
-      Node sibling = split();
+      var sibling = split();
       InternalNode newRoot = new InternalNode();
       newRoot.keys.add(sibling.getFirstLeafKey());
       newRoot.children.add(this);
@@ -66,7 +70,7 @@ public class LeafNode<K extends Comparable<? super K>, V> extends Node<K, V> {
 
   @Override
   void merge(Node sibling) {
-    LeafNode node = (LeafNode) sibling;
+    var node = (LeafNode) sibling;
     keys.addAll(node.keys);
     values.addAll(node.values);
     next = node.next;
@@ -74,7 +78,7 @@ public class LeafNode<K extends Comparable<? super K>, V> extends Node<K, V> {
 
   @Override
   Node split() {
-    LeafNode sibling = new LeafNode();
+    var sibling = new LeafNode();
     int from = (keyNumber() + 1) / 2, to = keyNumber();
     sibling.keys.addAll(keys.subList(from, to));
     sibling.values.addAll(values.subList(from, to));
